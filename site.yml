@@ -1,0 +1,39 @@
+- name: Install Docker and enable logging
+  hosts: localhost
+  become: true
+
+  tasks:
+    - name: Install GPG
+      apt: update_cache=yes name=gpg state=latest
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repo
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Install the Docker service
+      apt: update_cache=yes name=docker-ce state=latest
+    
+    - name: Create directory for docker configuration
+      file:
+        path: /etc/docker
+        state: directory
+
+    - name: Enable container logging to Docker host’s syslog file
+      copy:
+        src: ./daemon.json
+        dest: /etc/docker/daemon.json
+        owner: root
+        group: root
+        mode: 0600
+
+    - name: Restart and enable docker
+      service:
+        name: docker
+        state: restarted
+        enabled: yes
