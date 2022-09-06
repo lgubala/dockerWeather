@@ -38,5 +38,5 @@ $ docker build --rm -t "getweather:dev" .
 
 ### To run the image run:
 ```
-$ docker run --rm --name weatherreporting --env OWM_CITY="xxxx" --env OWM_API_KEY="xxxx" getweather:dev
+$ docker run --rm --name myWeather --env OWM_CITY="xxxx" --env OWM_API_KEY="xxxx" getweather:dev
 ```
